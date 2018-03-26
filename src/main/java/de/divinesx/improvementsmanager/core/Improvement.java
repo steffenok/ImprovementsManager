@@ -1,47 +1,50 @@
 package de.divinesx.improvementsmanager.core;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.io.Serializable;
-
-@Entity
+@MappedSuperclass
 @Getter
-public abstract class Improvement implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
+public abstract class Improvement {
+
 	public enum Type { BUG, NORMAL, WISH }
-	
+
 	public enum Priority {
-		LOW( 0 ), MIDDLE( 1 ), MAX( 2 );
-		
+		LOW(0), MIDDLE(1), MAX(2);
+
 		private int id;
-		
-		Priority( int id ) { this.id = id; }
+
+		Priority(int id) { this.id = id; }
 		public int getId() { return this.id; }
 	}
-	
-	protected Type     type;
+
+	@Transient
+	protected Type type;
+	@Transient
 	protected Priority priority;
-	protected String   tableName;
-	
+
 	@Id
-	@Column(name = "id")
-	protected   int  id;
-	@Column(name = "name")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	protected int id;
 	@Setter
 	protected String name;
-	
+
 	protected Improvement() {
 		this.type = this.getInfo().type();
 		this.priority = this.getInfo().priority();
-		this.tableName = this.getInfo().tableName();
 	}
-	
-	protected Improvement( String name) { super(); this.name = name; }
-	
-	private ImprovementInfo getInfo() { return this.getClass().getAnnotation( ImprovementInfo.class ); }
-	
+
+	protected Improvement(String name) {
+		super();
+		this.name = name;
+	}
+
+	private ImprovementInfo getInfo() { return this.getClass().getAnnotation(ImprovementInfo.class); }
+
 }
