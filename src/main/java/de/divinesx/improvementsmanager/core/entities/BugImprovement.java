@@ -10,7 +10,7 @@ import de.divinesx.improvementsmanager.core.ImprovementInfo;
 @Table(name = "mgmt_bugs")
 @ImprovementInfo(type = Improvement.Type.BUG, priority = Improvement.Priority.MAX)
 public class BugImprovement extends Improvement {
-
+	
 	public BugImprovement(String name) {
 		super(name);
 	}

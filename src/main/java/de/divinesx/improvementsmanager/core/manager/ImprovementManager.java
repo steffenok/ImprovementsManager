@@ -1,37 +1,40 @@
 package de.divinesx.improvementsmanager.core.manager;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import javax.persistence.EntityManagerFactory;
+
 import org.hibernate.cfg.Configuration;
 
+import de.divinesx.improvementsmanager.core.Improvement;
+import de.divinesx.improvementsmanager.core.ImprovementList;
 import de.divinesx.improvementsmanager.core.entities.BugImprovement;
 import lombok.Getter;
 
 public class ImprovementManager {
-	
-	private static ImprovementManager me;
-	
+
+	public static final ImprovementManager INSTANCE = new ImprovementManager();
+	public static final Database DATABASE = new Database();
+
 	private ImprovementManager() {}
-	
-	public static ImprovementManager getMe() { if (me == null) me = new ImprovementManager(); return me; }
 
 	@Getter
-	private SessionFactory sessionFactory;
-	@Getter
-	private Configuration hibernateConfig;
+	private ImprovementList improvements = new ImprovementList();
 	
-	public void openSessionFactory() {
-		this.hibernateConfig = new Configuration().configure();
-		this.hibernateConfig.addAnnotatedClass(BugImprovement.class);
+	public void addImprovement(Improvement improvent) { this.improvements.add(improvent); }
+	
+	public static class Database {
 		
-		this.sessionFactory = this.hibernateConfig.buildSessionFactory();
-		
-		Session session = this.sessionFactory.getCurrentSession();
-		
-		BugImprovement bug = new BugImprovement("TestBug23");
-		session.beginTransaction();
-		session.save(bug);
-		session.getTransaction().commit();
+		@Getter
+		private EntityManagerFactory entityFactory;
+		@Getter
+		private Configuration hibernateConfig;
+
+		public Database openSessionFactory() {
+			this.hibernateConfig = new Configuration().configure();
+			this.hibernateConfig.addAnnotatedClass(BugImprovement.class);
+			this.entityFactory = this.hibernateConfig.buildSessionFactory();
+			return this;
+		}
+
 	}
-	
+
 }

@@ -18,11 +18,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.3.0.CR1</version>
-            <scope>provided</scope>
-        </dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-core</artifactId>
+    		<version>5.2.2.Final</version>
+		</dependency>
         <dependency>
         	<groupId>org.clojure</groupId>
             <artifactId>java.jdbc</artifactId>
@@ -33,6 +32,7 @@
     		<groupId>mysql</groupId>
     		<artifactId>mysql-connector-java</artifactId>
    			<version>5.1.6</version>
+   			<scope>provided</scope>
 		</dependency>
 		<dependency>
     		<groupId>org.wildfly.swarm</groupId>
@@ -86,6 +86,22 @@
           			<target>1.8</target>
         		</configuration>
         	</plugin>
+        	<plugin>
+        		<artifactId>maven-assembly-plugin</artifactId>
+        		<executions>
+          			<execution>
+            			<phase>package</phase>
+            			<goals>
+              				<goal>single</goal>
+            			</goals>
+          			</execution>
+        		</executions>
+        		<configuration>
+          			<descriptorRefs>
+            			<descriptorRef>jar-with-dependencies</descriptorRef>
+          			</descriptorRefs>
+        		</configuration>
+      		</plugin>
 		</plugins>
 	</build>
 </project>

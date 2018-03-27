@@ -1,9 +1,13 @@
 package de.divinesx.improvementsmanager.core;
 
+import java.util.Calendar;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import lombok.Getter;
@@ -32,16 +36,18 @@ public abstract class Improvement {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	protected int id;
-	@Setter
 	protected String name;
-
-	protected Improvement() {
+	@Temporal(TemporalType.TIMESTAMP)
+	@Setter
+	protected Calendar timestamp;
+	
+	public Improvement() {
 		this.type = this.getInfo().type();
 		this.priority = this.getInfo().priority();
 	}
 
-	protected Improvement(String name) {
-		super();
+	public Improvement(String name) {
+		this();
 		this.name = name;
 	}
 

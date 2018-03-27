@@ -5,4 +5,9 @@ import de.divinesx.improvementsmanager.core.ImprovementInfo;
 
 @ImprovementInfo(type = Improvement.Type.WISH, priority = Improvement.Priority.LOW)
 public class WishImprovement extends Improvement {
+	
+	public WishImprovement(String name) {
+		super(name);
+	}
+	
 }
