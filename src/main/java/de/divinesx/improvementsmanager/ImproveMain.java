@@ -1,7 +1,5 @@
 package de.divinesx.improvementsmanager;
 
-import java.util.Calendar;
-
 import javax.persistence.EntityManager;
 
 import de.divinesx.improvementsmanager.core.ImprovementList;
@@ -9,6 +7,8 @@ import de.divinesx.improvementsmanager.core.entities.BugImprovement;
 import de.divinesx.improvementsmanager.core.entities.NormalImprovement;
 import de.divinesx.improvementsmanager.core.entities.WishImprovement;
 import de.divinesx.improvementsmanager.core.manager.ImprovementManager;
+import de.divinesx.improvementsmanager.event.EventManager;
+import de.divinesx.improvementsmanager.tests.Event01Create;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,10 +18,8 @@ import javafx.stage.Stage;
 public class ImproveMain extends Application {
 
 	public static void main(String[] args) throws Exception {
-		//ImprovementManager.DATABASE.openSessionFactory();
-		
+		EventManager.INSTANCE.addListener(new Event01Create());
 		doTestCompare();
-		
 		launch();
 	}
 
@@ -52,10 +50,13 @@ public class ImproveMain extends Application {
 		ImprovementManager.INSTANCE.addImprovement(new NormalImprovement("NormalImprovement"));
 		ImprovementManager.INSTANCE.addImprovement(new WishImprovement("WishImprovement"));
 		ImprovementManager.INSTANCE.addImprovement(new BugImprovement("BugImprovement"));
-		ImprovementManager.INSTANCE.getImprovements().get(0).setTimestamp(Calendar.getInstance());
-		ImprovementManager.INSTANCE.getImprovements().get(1).setTimestamp(Calendar.getInstance());
-		ImprovementManager.INSTANCE.getImprovements().get(2).setTimestamp(Calendar.getInstance());
-		ImprovementManager.INSTANCE.getImprovements().getBy(ImprovementList.FilterType.DAY, "2018", "3", "27").forEach(i -> System.out.println(i.getPriority().toString()));
+		ImprovementManager.INSTANCE.addImprovement(new BugImprovement("BugImprovement2"));
+		
+		ImprovementManager.INSTANCE.getImprovements().get(0).setId(1);
+		
+		System.out.println();
+		System.out.println("Printing sorted info:");
+		ImprovementManager.INSTANCE.getImprovements().getBy(ImprovementList.FilterType.PRIORITY, "MAX").forEach(i -> System.out.println(i.getName() + ":" + i.getPriority().toString()));
 	}
 
 }

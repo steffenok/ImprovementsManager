@@ -10,8 +10,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import de.divinesx.improvementsmanager.core.events.ImprovementCreateEvent;
+import de.divinesx.improvementsmanager.core.events.ImprovementEditEvent;
+import de.divinesx.improvementsmanager.event.EventManager;
 import lombok.Getter;
-import lombok.Setter;
 
 @MappedSuperclass
 @Getter
@@ -36,21 +38,30 @@ public abstract class Improvement {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	protected int id;
+	
 	protected String name;
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Setter
-	protected Calendar timestamp;
+	protected Calendar timestamp = Calendar.getInstance();
 	
 	public Improvement() {
 		this.type = this.getInfo().type();
 		this.priority = this.getInfo().priority();
+		EventManager.INSTANCE.callEvent(new ImprovementCreateEvent(this));
 	}
 
 	public Improvement(String name) {
 		this();
 		this.name = name;
+		EventManager.INSTANCE.callEvent(new ImprovementCreateEvent(this));
 	}
 
 	private ImprovementInfo getInfo() { return this.getClass().getAnnotation(ImprovementInfo.class); }
 
+	public void setId(int id) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.id, id)); this.id = id; }
+	
+	public void setName(String name) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.name, name)); this.name = name; }
+	
+	public void setTimestamp(Calendar timestamp) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.timestamp, timestamp)); this.timestamp = timestamp; }
+	
 }
