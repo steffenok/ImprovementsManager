@@ -1,16 +1,13 @@
 package de.divinesx.improvementsmanager.core;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class ImprovementList extends ArrayList<Improvement> {
+public class ImprovementList extends ObservableArrayList<Improvement> {
 
 	public enum FilterType { PRIORITY, YEAR, MONTH, DAY }
-	
-	private static final long serialVersionUID = 1L;
-	
+		
 	public ImprovementList() {}
 	
 	public ImprovementList(Collection<? extends Improvement> collection) { super(collection); }
@@ -44,7 +41,7 @@ public class ImprovementList extends ArrayList<Improvement> {
 		
 		switch (type) {
 			case PRIORITY:
-				return (ImprovementList) this.stream().sorted((c1, c2) -> c2.getPriority().getId() - c2.getPriority().getId()).collect(Collectors.toList());
+				return new ImprovementList(this.stream().sorted((c1, c2) -> c2.getPriority().getId() - c2.getPriority().getId()).collect(Collectors.toList()));
 			default:
 				return this;
 		}

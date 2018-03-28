@@ -1,5 +1,8 @@
 package de.divinesx.improvementsmanager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import de.divinesx.improvementsmanager.core.ImprovementList;
@@ -17,21 +20,29 @@ import javafx.stage.Stage;
 
 public class ImproveMain extends Application {
 
-	public static void main(String[] args) throws Exception {
-		EventManager.INSTANCE.addListener(new Event01Create());
-		doTestCompare();
-		launch();
-	}
+	public static List<String> stringList = new ArrayList<String>();
+	
+	public static void main(String[] args) throws Exception { launch(); }
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("resources/Main.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/resources/Main.fxml"));
 	    
-        Scene scene = new Scene(root, 500, 350);
-    
+        Scene scene = new Scene(root, 680, 430);
+
         primaryStage.setTitle("ImprovementsManager");
         primaryStage.setScene(scene);
+        
+        primaryStage.setResizable(false);
+        primaryStage.setMaxWidth(680);
+        primaryStage.setMaxHeight(430);
+        
+        primaryStage.centerOnScreen();
+        
         primaryStage.show();
+        
+		EventManager.INSTANCE.addListener(new Event01Create());
+		doTestCompare();
 	}
 	
 	public static void doTestTransaction() {

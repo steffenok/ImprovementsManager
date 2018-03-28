@@ -13,7 +13,10 @@ import javax.persistence.Transient;
 import de.divinesx.improvementsmanager.core.events.ImprovementCreateEvent;
 import de.divinesx.improvementsmanager.core.events.ImprovementEditEvent;
 import de.divinesx.improvementsmanager.event.EventManager;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import lombok.Getter;
+import lombok.Setter;
 
 @MappedSuperclass
 @Getter
@@ -34,7 +37,10 @@ public abstract class Improvement {
 	protected Type type;
 	@Transient
 	protected Priority priority;
-
+	@Transient
+	@Setter
+	protected Image displayImage;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	protected int id;
@@ -63,5 +69,13 @@ public abstract class Improvement {
 	public void setName(String name) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.name, name)); this.name = name; }
 	
 	public void setTimestamp(Calendar timestamp) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.timestamp, timestamp)); this.timestamp = timestamp; }
+	
+	public ImageView getImageView() {
+		ImageView imageView = new ImageView(this.displayImage);
+		imageView.setFitWidth(25);
+		imageView.setFitHeight(25);
+		imageView.setTranslateY(5);
+		return imageView;
+	}
 	
 }

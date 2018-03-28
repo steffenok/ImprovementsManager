@@ -22,7 +22,7 @@ public class EventManager {
 				
 				if (!method.isAnnotationPresent(EventHandler.class)) continue;
 				if (method.getParameterCount() != 1) continue;
-				if (!(method.getParameterTypes()[0] == eventToCall.getClass())) continue;
+				if (method.getParameterTypes()[0] != eventToCall.getClass()) continue;
 				
 				try {
 					method.invoke(listener, eventToCall);
