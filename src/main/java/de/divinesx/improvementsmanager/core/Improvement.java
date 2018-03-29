@@ -1,6 +1,9 @@
 package de.divinesx.improvementsmanager.core;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +15,14 @@ import javax.persistence.Transient;
 
 import de.divinesx.improvementsmanager.core.events.ImprovementCreateEvent;
 import de.divinesx.improvementsmanager.core.events.ImprovementEditEvent;
+import de.divinesx.improvementsmanager.core.manager.ImprovementManager;
 import de.divinesx.improvementsmanager.event.EventManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBuilder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -50,6 +58,8 @@ public abstract class Improvement {
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Calendar timestamp = Calendar.getInstance();
 	
+	private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+	
 	public Improvement() {
 		this.type = this.getInfo().type();
 		this.priority = this.getInfo().priority();
@@ -74,8 +84,18 @@ public abstract class Improvement {
 		ImageView imageView = new ImageView(this.displayImage);
 		imageView.setFitWidth(25);
 		imageView.setFitHeight(25);
-		imageView.setTranslateY(5);
 		return imageView;
+	}
+	
+	public Text[] getInfos() {
+		List<Text> infos = new ArrayList<Text>();
+		
+		infos.add(TextBuilder.create().text(this.name).font(Font.font("Verdana", FontWeight.BOLD, 13)).build());
+		if (ImprovementManager.INSTANCE.isShowId()) infos.add(TextBuilder.create().text(String.valueOf(this.id)).build());
+		if (ImprovementManager.INSTANCE.isShowDate()) infos.add(TextBuilder.create().text(String.valueOf(this.dateFormatter.format(this.timestamp.getTime()))).build());
+		if (ImprovementManager.INSTANCE.isShowPriority()) infos.add(TextBuilder.create().text(String.valueOf(this.priority.toString())).build());
+		
+		return infos.toArray(new Text[infos.size()]);
 	}
 	
 }

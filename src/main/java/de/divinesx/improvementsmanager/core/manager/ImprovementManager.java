@@ -8,6 +8,7 @@ import de.divinesx.improvementsmanager.core.Improvement;
 import de.divinesx.improvementsmanager.core.ImprovementList;
 import de.divinesx.improvementsmanager.core.entities.BugImprovement;
 import lombok.Getter;
+import lombok.Setter;
 
 public class ImprovementManager {
 
@@ -18,6 +19,16 @@ public class ImprovementManager {
 
 	@Getter
 	private ImprovementList improvements = new ImprovementList();
+	
+
+	@Getter @Setter
+	private boolean showId = true;
+	
+	@Getter @Setter
+	private boolean showDate = true;
+	
+	@Getter @Setter
+	private boolean showPriority = true;
 	
 	public void addImprovement(Improvement improvent) { this.improvements.add(improvent); }
 	
