@@ -28,7 +28,7 @@ public class ImproveMain extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/resources/Main.fxml"));
 	    
-        Scene scene = new Scene(root, 680, 430);
+        Scene scene = new Scene(root, 480, 336);
 
         primaryStage.setTitle("ImprovementsManager");
         primaryStage.setScene(scene);

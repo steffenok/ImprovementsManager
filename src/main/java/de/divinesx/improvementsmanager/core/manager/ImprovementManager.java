@@ -1,5 +1,8 @@
 package de.divinesx.improvementsmanager.core.manager;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.EntityManagerFactory;
 
 import org.hibernate.cfg.Configuration;
@@ -7,6 +10,8 @@ import org.hibernate.cfg.Configuration;
 import de.divinesx.improvementsmanager.core.Improvement;
 import de.divinesx.improvementsmanager.core.ImprovementList;
 import de.divinesx.improvementsmanager.core.entities.BugImprovement;
+import de.divinesx.improvementsmanager.core.entities.NormalImprovement;
+import de.divinesx.improvementsmanager.core.entities.WishImprovement;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,12 +41,15 @@ public class ImprovementManager {
 		
 		@Getter
 		private EntityManagerFactory entityFactory;
+		
 		@Getter
 		private Configuration hibernateConfig;
 
+		private List<Class<?>> annotatedClasses = Arrays.asList(Improvement.class, BugImprovement.class, NormalImprovement.class, WishImprovement.class);
+		
 		public Database openSessionFactory() {
 			this.hibernateConfig = new Configuration().configure();
-			this.hibernateConfig.addAnnotatedClass(BugImprovement.class);
+			this.annotatedClasses.forEach(this.hibernateConfig::addAnnotatedClass);
 			this.entityFactory = this.hibernateConfig.buildSessionFactory();
 			return this;
 		}
