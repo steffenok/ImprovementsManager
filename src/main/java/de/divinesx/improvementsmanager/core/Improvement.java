@@ -23,11 +23,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBuilder;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.var;
 
 @MappedSuperclass
-@Getter
+@Getter @ToString @EqualsAndHashCode
+@FieldDefaults(level = AccessLevel.PROTECTED)
 public abstract class Improvement {
 
 	public enum Type { BUG, NORMAL, WISH }
@@ -41,23 +47,19 @@ public abstract class Improvement {
 		public int getId() { return this.id; }
 	}
 
-	@Transient
-	protected Type type;
-	@Transient
-	protected Priority priority;
-	@Transient
-	@Setter
-	protected Image displayImage;
+	@Transient Type type;
+	@Transient Priority priority;
+	@Setter @Transient Image displayImage;
 	
-	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	protected int id;
+	@Id int id;
 	
-	protected String name;
+	String name;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	protected Calendar timestamp = Calendar.getInstance();
+	Calendar timestamp = Calendar.getInstance();
 	
+	@Getter(value = AccessLevel.PRIVATE)
 	private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public Improvement() {
@@ -74,11 +76,11 @@ public abstract class Improvement {
 
 	private ImprovementInfo getInfo() { return this.getClass().getAnnotation(ImprovementInfo.class); }
 
-	public void setId(int id) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.id, id)); this.id = id; }
+	public Improvement setId(int id) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.id, id)); this.id = id; return this; }
 	
-	public void setName(String name) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.name, name)); this.name = name; }
+	public Improvement setName(String name) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.name, name)); this.name = name; return this; }
 	
-	public void setTimestamp(Calendar timestamp) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.timestamp, timestamp)); this.timestamp = timestamp; }
+	public Improvement setTimestamp(Calendar timestamp) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.timestamp, timestamp)); this.timestamp = timestamp; return this; }
 	
 	public ImageView getImageView() {
 		ImageView imageView = new ImageView(this.displayImage);
@@ -88,7 +90,7 @@ public abstract class Improvement {
 	}
 	
 	public Text[] getInfos() {
-		List<Text> infos = new ArrayList<Text>();
+		var infos = new ArrayList<Text>();
 		
 		infos.add(TextBuilder.create().text(this.name).font(Font.font("Verdana", FontWeight.BOLD, 13)).build());
 		if (ImprovementManager.INSTANCE.isShowId()) infos.add(TextBuilder.create().text(String.valueOf(this.id)).build());

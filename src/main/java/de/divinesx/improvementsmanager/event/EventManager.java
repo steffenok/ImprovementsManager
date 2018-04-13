@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.SneakyThrows;
+
 public class EventManager {
 
 	public static final EventManager INSTANCE = new EventManager();
@@ -14,6 +16,7 @@ public class EventManager {
 	
 	public void addListener(Listener listener) { this.listeners.add(listener); }
 	
+	@SneakyThrows
 	public void callEvent(Event eventToCall) {
 		
 		for (Listener listener : this.listeners) {			
@@ -24,11 +27,7 @@ public class EventManager {
 				if (method.getParameterCount() != 1) continue;
 				if (method.getParameterTypes()[0] != eventToCall.getClass()) continue;
 				
-				try {
-					method.invoke(listener, eventToCall);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+				method.invoke(listener, eventToCall);
 			}
 		}
 		

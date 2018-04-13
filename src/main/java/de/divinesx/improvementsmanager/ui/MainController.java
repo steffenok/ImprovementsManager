@@ -23,15 +23,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.var;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MainController implements Initializable {
 	
-	@FXML private JFXButton settingsButton;
-	@FXML private JFXListView<Improvement> improvementList;
-	@FXML private JFXSlider showFilter;
-	@FXML private JFXCheckBox idCheckbox;
-	@FXML private JFXCheckBox dateCheckbox;
-	@FXML private JFXCheckBox priorityCheckbox;
+	@FXML JFXButton settingsButton;
+	@FXML JFXListView<Improvement> improvementList;
+	@FXML JFXSlider showFilter;
+	@FXML JFXCheckBox idCheckbox;
+	@FXML JFXCheckBox dateCheckbox;
+	@FXML JFXCheckBox priorityCheckbox;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -42,8 +46,8 @@ public class MainController implements Initializable {
 	}
 	
 	private void initializeSettingsButton() {
-		double[] preferedSize = new double[] { this.settingsButton.getMaxWidth() - 3, this.settingsButton.getMaxHeight() - 3 };
-		ImageView imageView = new ImageView(new Image("resources/images/button_settings.png"));
+		var preferedSize = new double[] { this.settingsButton.getMaxWidth() - 3, this.settingsButton.getMaxHeight() - 3 };
+		var imageView = new ImageView(new Image("resources/images/button_settings.png"));
 		imageView.setFitWidth(preferedSize[0]);
 		imageView.setFitHeight(preferedSize[1]);
 		
@@ -67,8 +71,8 @@ public class MainController implements Initializable {
 					if (empty) setGraphic(null);
 					if (improvement == null) return;
 
-					VBox vBox = new VBox(improvement.getInfos());
-                    HBox hBox = new HBox(improvement.getImageView(), vBox);
+					var vBox = new VBox(improvement.getInfos());
+                    var hBox = new HBox(improvement.getImageView(), vBox);
                     hBox.setAlignment(Pos.CENTER_LEFT);
                     hBox.setSpacing(10);
                     setGraphic(hBox);
@@ -103,8 +107,8 @@ public class MainController implements Initializable {
 		this.dateCheckbox.setSelected(ImprovementManager.INSTANCE.isShowDate());
 		this.priorityCheckbox.setSelected(ImprovementManager.INSTANCE.isShowPriority());
 		EventHandler<ActionEvent> actionEvent = onAction -> {
-			JFXCheckBox checkBox = ((JFXCheckBox)onAction.getSource());
-			String checkBoxText = checkBox.getText();
+			var checkBox = ((JFXCheckBox)onAction.getSource());
+			var checkBoxText = checkBox.getText();
 			if (checkBoxText.contains("ID")) ImprovementManager.INSTANCE.setShowId(checkBox.isSelected());
 			else if (checkBoxText.contains("Date")) ImprovementManager.INSTANCE.setShowDate(checkBox.isSelected());
 			else if (checkBoxText.contains("Priority")) ImprovementManager.INSTANCE.setShowPriority(checkBox.isSelected());
