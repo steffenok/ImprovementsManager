@@ -5,23 +5,16 @@ import java.util.Collection;
 import java.util.List;
 
 import javafx.collections.ModifiableObservableListBase;
+import lombok.experimental.Delegate;
 
 public class ObservableArrayList<E> extends ModifiableObservableListBase<E> {
+	
+	@Delegate
     private final List<E> delegate = new ArrayList<>();
 
     public ObservableArrayList() {}
     
     public ObservableArrayList(Collection<? extends E> collection) { this.addAll(collection); }
-    
-    @Override
-    public E get(final int index) {
-        return delegate.get(index);
-    }
-
-    @Override
-    public int size() {
-        return delegate.size();
-    }
 
     @Override
     protected void doAdd(final int index, final E element) {

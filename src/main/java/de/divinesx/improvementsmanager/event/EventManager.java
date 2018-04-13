@@ -2,24 +2,24 @@ package de.divinesx.improvementsmanager.event;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import lombok.SneakyThrows;
+import lombok.experimental.ExtensionMethod;
+import lombok.experimental.UtilityClass;
 
+@ExtensionMethod(value = { Arrays.class })
+@UtilityClass
 public class EventManager {
 
-	public static final EventManager INSTANCE = new EventManager();
-	
 	private final List<Listener> listeners = new ArrayList<Listener>();
 	
-	private EventManager() {}
-	
-	public void addListener(Listener listener) { this.listeners.add(listener); }
+	public void addListener(Listener listener) { listeners.add(listener); }
 	
 	@SneakyThrows
 	public void callEvent(Event eventToCall) {
-		
-		for (Listener listener : this.listeners) {			
+		for (Listener listener : listeners) {			
 			for (Method method : listener.getClass().getDeclaredMethods()) {
 				method.setAccessible(true);
 				
@@ -30,7 +30,6 @@ public class EventManager {
 				method.invoke(listener, eventToCall);
 			}
 		}
-		
 	}
 	
 }

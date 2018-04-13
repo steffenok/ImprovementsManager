@@ -10,7 +10,7 @@ public class Event01Create implements Listener {
 	@EventHandler
 	public void onCreate(ImprovementCreateEvent event) {
 		if (event.getImprovement().getName() != null)
-		 System.out.println("OnCreate: " + event.getImprovement().getName());
+			System.out.println("OnCreate: " + event.getImprovement().getName());
 	}
 	
 	@EventHandler

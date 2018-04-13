@@ -3,7 +3,6 @@ package de.divinesx.improvementsmanager.core;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +23,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBuilder;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,13 +38,10 @@ public abstract class Improvement {
 
 	public enum Type { BUG, NORMAL, WISH }
 
+	@Getter @AllArgsConstructor
 	public enum Priority {
 		LOW(0), MIDDLE(1), MAX(2);
-
-		private int id;
-
-		Priority(int id) { this.id = id; }
-		public int getId() { return this.id; }
+		int id;
 	}
 
 	@Transient Type type;
@@ -64,22 +61,22 @@ public abstract class Improvement {
 	public Improvement() {
 		this.type = this.getInfo().type();
 		this.priority = this.getInfo().priority();
-		EventManager.INSTANCE.callEvent(new ImprovementCreateEvent(this));
+		EventManager.callEvent(new ImprovementCreateEvent(this));
 	}
 
 	public Improvement(String name) {
 		this();
 		this.name = name;
-		EventManager.INSTANCE.callEvent(new ImprovementCreateEvent(this));
+		EventManager.callEvent(new ImprovementCreateEvent(this));
 	}
 
 	private ImprovementInfo getInfo() { return this.getClass().getAnnotation(ImprovementInfo.class); }
 
-	public Improvement setId(int id) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.id, id)); this.id = id; return this; }
+	public Improvement setId(int id) { EventManager.callEvent(new ImprovementEditEvent(this, this.id, id)); this.id = id; return this; }
 	
-	public Improvement setName(String name) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.name, name)); this.name = name; return this; }
+	public Improvement setName(String name) { EventManager.callEvent(new ImprovementEditEvent(this, this.name, name)); this.name = name; return this; }
 	
-	public Improvement setTimestamp(Calendar timestamp) { EventManager.INSTANCE.callEvent(new ImprovementEditEvent(this, this.timestamp, timestamp)); this.timestamp = timestamp; return this; }
+	public Improvement setTimestamp(Calendar timestamp) { EventManager.callEvent(new ImprovementEditEvent(this, this.timestamp, timestamp)); this.timestamp = timestamp; return this; }
 	
 	public ImageView getImageView() {
 		ImageView imageView = new ImageView(this.displayImage);

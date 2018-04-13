@@ -41,7 +41,7 @@ public class ImproveMain extends Application {
         
         primaryStage.show();
         
-		EventManager.INSTANCE.addListener(new Event01Create());
+		EventManager.addListener(new Event01Create());
 		doTestCompare();
 	}
 	
@@ -59,12 +59,14 @@ public class ImproveMain extends Application {
 	
 	public static void doTestCompare() {
 		ImprovementManager.INSTANCE.addImprovement(new NormalImprovement("NormalImprovement"));
+		ImprovementManager.INSTANCE.addImprovement(new NormalImprovement("NormalImprovement2"));
 		ImprovementManager.INSTANCE.addImprovement(new WishImprovement("WishImprovement"));
 		ImprovementManager.INSTANCE.addImprovement(new BugImprovement("BugImprovement"));
 		ImprovementManager.INSTANCE.addImprovement(new BugImprovement("BugImprovement2"));
 		
 		ImprovementManager.INSTANCE.getImprovements().get(0).setId(1);
-		
+		System.out.println(ImprovementManager.INSTANCE.getImprovements().get(0).equals(ImprovementManager.INSTANCE.getImprovements().get(1)));
+				
 		System.out.println();
 		System.out.println("Printing sorted info:");
 		ImprovementManager.INSTANCE.getImprovements().getBy(ImprovementList.FilterType.PRIORITY, "MAX").forEach(i -> System.out.println(i.getName() + ":" + i.getPriority().toString()));
