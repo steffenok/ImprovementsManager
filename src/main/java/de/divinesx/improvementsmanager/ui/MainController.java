@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -36,6 +37,10 @@ public class MainController implements Initializable {
 	@FXML JFXCheckBox idCheckbox;
 	@FXML JFXCheckBox dateCheckbox;
 	@FXML JFXCheckBox priorityCheckbox;
+	
+	@FXML TextField idField;
+	@FXML TextField nameField;
+	@FXML TextField dateField;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -78,6 +83,12 @@ public class MainController implements Initializable {
                     setGraphic(hBox);
 				}
 			};
+		});
+		
+		this.improvementList.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
+			this.idField.setText(String.valueOf(newValue.getId()));
+			this.nameField.setText(newValue.getName());
+			this.dateField.setText(newValue.getDateFormatter().format(newValue.getTimestamp().getTime()));
 		});
 	}
 	

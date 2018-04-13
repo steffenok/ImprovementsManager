@@ -59,7 +59,6 @@ public abstract class Improvement {
 	@Temporal(TemporalType.TIMESTAMP)
 	Calendar timestamp = Calendar.getInstance();
 	
-	@Getter(value = AccessLevel.PRIVATE)
 	private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public Improvement() {
