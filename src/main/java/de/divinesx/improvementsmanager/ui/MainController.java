@@ -133,12 +133,13 @@ public class MainController implements Initializable {
 	
 	private void callListUpdate(Number value) {
 		improvementList.setItems(null);
-		if (value.intValue() == 0) {
+		improvementList.setItems(ImprovementManager.INSTANCE.getImprovements().getSortedBy(FilterType.PRIORITY));
+		/*if (value.intValue() == 0) {
     		improvementList.setItems(ImprovementManager.INSTANCE.getImprovements());
     	}
       	else if (value.intValue() == 1) {
     		improvementList.setItems(ImprovementManager.INSTANCE.getImprovements().getBy(FilterType.PRIORITY, "LOW"));
-       	}
+       	}*/
 	}
 
 }

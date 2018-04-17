@@ -1,6 +1,7 @@
 package de.divinesx.improvementsmanager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -26,6 +27,8 @@ public class ImproveMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		doTestCompare();
+		
 		Parent root = FXMLLoader.load(getClass().getResource("/resources/Main.fxml"));
 	    
         Scene scene = new Scene(root, 480, 336);
@@ -42,7 +45,6 @@ public class ImproveMain extends Application {
         primaryStage.show();
         
 		EventManager.addListener(new Event01Create());
-		doTestCompare();
 	}
 	
 	public static void doTestTransaction() {
@@ -63,10 +65,9 @@ public class ImproveMain extends Application {
 		ImprovementManager.INSTANCE.addImprovement(new WishImprovement("WishImprovement"));
 		ImprovementManager.INSTANCE.addImprovement(new BugImprovement("BugImprovement"));
 		ImprovementManager.INSTANCE.addImprovement(new BugImprovement("BugImprovement2"));
-		
+	
 		ImprovementManager.INSTANCE.getImprovements().get(0).setId(1);
-		System.out.println(ImprovementManager.INSTANCE.getImprovements().get(0).equals(ImprovementManager.INSTANCE.getImprovements().get(1)));
-				
+		
 		System.out.println();
 		System.out.println("Printing sorted info:");
 		ImprovementManager.INSTANCE.getImprovements().getBy(ImprovementList.FilterType.PRIORITY, "MAX").forEach(i -> System.out.println(i.getName() + ":" + i.getPriority().toString()));

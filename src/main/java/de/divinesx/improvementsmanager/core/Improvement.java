@@ -3,6 +3,7 @@ package de.divinesx.improvementsmanager.core;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -95,5 +96,5 @@ public abstract class Improvement {
 		
 		return infos.toArray(new Text[infos.size()]);
 	}
-	
+
 }

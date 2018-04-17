@@ -41,7 +41,9 @@ public class ImprovementList extends ObservableArrayList<Improvement> {
 		
 		switch (type) {
 			case PRIORITY:
-				return new ImprovementList(this.stream().sorted((c1, c2) -> c2.getPriority().getId() - c2.getPriority().getId()).collect(Collectors.toList()));
+				return new ImprovementList(this.stream().sorted((c1, c2) -> c2.getPriority().getId() - c1.getPriority().getId()).collect(Collectors.toList()));
+			case DAY:
+				return new ImprovementList(this.stream().sorted((c1, c2) -> (int)(c2.getTimestamp().getTime().getTime() - c1.getTimestamp().getTime().getTime())).collect(Collectors.toList()));
 			default:
 				return this;
 		}
